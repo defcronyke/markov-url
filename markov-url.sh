@@ -4,12 +4,26 @@ markov_url() {
 	WORDS=${WORDS:-"100"}
 	URL=${URL:-"$(printf "aHR0cHM6Ly93d3cuY2JjLmNhL25ld3MvdGVjaG5vbG9neS9hcmNoZW9sb2dpc3RzLWNlcmVtb25pYWwtY2hhcmlvdC1wb21wZWlpLTEuNTkzMTcxMg==" | base64 -d)"}
 
+	# Allow args to be in either position.
 	if [ $# -ge 1 ]; then
-		WORDS="$1"
+		# If arg is a number.
+		if [ "$1" -eq "$1" ] 2>/dev/null; then
+			WORDS="$1"
+		else
+			URL="$1"
+		fi
 	fi
 
+	# Allow args to be in either position.
 	if [ $# -ge 2 ]; then
-		URL="$2"
+		# If arg is a number.
+		if [ "$1" -eq "$1" ] 2>/dev/null; then
+			WORDS="$1"
+			URL="$2"
+		else
+			URL="$1"
+			WORDS="$2"
+		fi
 	fi
 
 	which apt-get >/dev/null 2>&1
