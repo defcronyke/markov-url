@@ -60,7 +60,7 @@ markov_url() {
 
 		if [ $HAS_ALL_DEBIAN_CMDS -ne 0 ]; then
 			echo "Some dependencies are needed: $DEBIAN_DEPS"
-			$SU_CMD apt-get update && sudo apt-get install -y $DEBIAN_DEPS
+			$SU_CMD apt-get update && sudo apt-get install $DEBIAN_DEPS
 		fi
 	elif [ $IS_ARCH -eq 0 ]; then
 		which pacaur >/dev/null 2>&1
