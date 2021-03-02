@@ -73,7 +73,7 @@ markov_url() {
 			echo "error: You need to install \"pacaur\" or \"yay\" first:"
 			echo "error: https://aur.archlinux.org/packages/pacaur"
 			echo "error: https://aur.archlinux.org/packages/yay"
-			return 2
+			return 1
 		fi
 
 		if [ $HAS_PACAUR -eq 0 ]; then
@@ -82,7 +82,7 @@ markov_url() {
 			PAC_CMD="yay -Syy"
 		else
 			echo "error: You need to install \"pacaur\" or \"yay\" first."
-			return 3
+			return 2
 		fi
 
 		ARCH_DEPS="curl grep sed chromium html-xml-utils recode"
@@ -103,7 +103,6 @@ markov_url() {
 		fi
 	else
 		echo "warning: Your distro isn't supported yet."
-		return 1
 	fi
 		
 	PAGE_FILTERED=$(PAGE=$(curl -sL "$URL" | sed -n '/^.*<body/,/^.*<\/body>/{p;/^.*<\/body>/q}'); \
