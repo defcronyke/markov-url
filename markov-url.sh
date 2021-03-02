@@ -46,8 +46,8 @@ markov_url() {
 	fi
 
 	if [ $IS_DEBIAN -eq 0 ]; then
-		DEBIAN_DEPS="curl grep sed chromium html-xml-utils recode"
-		DEBIAN_CMDS="curl grep sed chromium hxselect recode"
+		DEBIAN_DEPS="curl grep sed chromium recode html-xml-utils"
+		DEBIAN_CMDS="curl grep sed chromium recode hxselect"
 
 		HAS_ALL_DEBIAN_CMDS=0
 		for i in ${DEBIAN_CMDS[@]}; do
@@ -85,8 +85,8 @@ markov_url() {
 			return 2
 		fi
 
-		ARCH_DEPS="curl grep sed chromium html-xml-utils recode"
-		ARCH_CMDS="curl grep sed chromium hxselect recode"
+		ARCH_DEPS="curl grep sed chromium recode html-xml-utils"
+		ARCH_CMDS="curl grep sed chromium recode hxselect"
 
 		HAS_ALL_ARCH_CMDS=0
 		for i in ${ARCH_CMDS[@]}; do
@@ -102,7 +102,25 @@ markov_url() {
 			$PAC_CMD $ARCH_DEPS
 		fi
 	else
-		echo "warning: Your distro isn't supported yet."
+        OTHER_DEPS="curl grep sed chromium recode html-xml-utils"
+        OTHER_CMDS="curl grep sed chromium recode hxselect"
+
+        HAS_ALL_OTHER_CMDS=0
+		for i in ${OTHER_CMDS[@]}; do
+			which "$i" >/dev/null 2>&1
+			HAS_ALL_OTHER_CMDS=$?
+			if [ $HAS_ALL_OTHER_CMDS -ne 0 ]; then
+				break
+			fi
+		done
+
+		if [ $HAS_ALL_OTHER_CMDS -ne 0 ]; then
+            echo "warning: Your distro isn't supported yet."
+            echo "warning: It should still work if you have the following dependencies installed:"
+            echo "warning: $OTHER_DEPS"
+            echo "warning: You'll need to install those first. If you can find \"html-xml-utils\", \
+try looking for the command named \"hxselect\", because that's what's needed from that package."
+        fi
 	fi
 		
 	PAGE_FILTERED=$(PAGE=$(curl -sL "$URL" | sed -n '/^.*<body/,/^.*<\/body>/{p;/^.*<\/body>/q}'); \
