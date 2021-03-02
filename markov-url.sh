@@ -1,15 +1,15 @@
 #!/bin/bash
 
 markov_url() {
-	URL=${URL:-"$(printf "aHR0cHM6Ly93d3cuY2JjLmNhL25ld3MvdGVjaG5vbG9neS9hcmNoZW9sb2dpc3RzLWNlcmVtb25pYWwtY2hhcmlvdC1wb21wZWlpLTEuNTkzMTcxMg==" | base64 -d)"}
 	WORDS=${WORDS:-"100"}
+	URL=${URL:-"$(printf "aHR0cHM6Ly93d3cuY2JjLmNhL25ld3MvdGVjaG5vbG9neS9hcmNoZW9sb2dpc3RzLWNlcmVtb25pYWwtY2hhcmlvdC1wb21wZWlpLTEuNTkzMTcxMg==" | base64 -d)"}
 
 	if [ $# -ge 1 ]; then
-		URL="$1"
+		WORDS="$1"
 	fi
 
 	if [ $# -ge 2 ]; then
-		WORDS="$2"
+		URL="$2"
 	fi
 
 	which apt-get >/dev/null 2>&1
