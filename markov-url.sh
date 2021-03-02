@@ -56,7 +56,8 @@ markov_url() {
         echo "$PAGE" | (hxselect -s ' ' -ic '.detailHeadline, .story h2' && echo "$PAGE" | \
         hxselect -s ' ' -ic '.story p') | sed 's@\—@@g' | sed 's@ @ @g' | \
         recode -qf html..utf-8 | recode -qf utf-8..ascii | \
-        sed -E 's@(['"'"'"`])@\\\1@g')
+        sed -E 's@(['"'"'"`])@\\\1@g' | \
+        sed -E 's@</*.+>@@g')
 
     URI_STR="https://defcronyke.github.io/markov-chain?words=${WORDS}&in="
 
@@ -76,7 +77,8 @@ markov_url() {
 
     chromium --headless --disable-gpu --dump-dom \
         "$FINAL_URI" 2>/dev/null | \
-        grep "<body>" | sed 's/<body>//' | sed 's@\\@@g'
+        grep "<body>" | sed 's/<body>//' | sed 's@\\@@g' | \
+        recode -qf html..ascii
 
     # echo -e "\n\n=========================================\n"
     
