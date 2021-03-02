@@ -12,5 +12,5 @@ printf "aHR0cHM6Ly93d3cuY2JjLmNhL25ld3MvdGVjaG5vbG9neS9hcmNoZW9sb2dpc3RzLWNlcmVt
 
 ```shell
 # The optional arguments can be passed in whichever order you prefer.
-bash <(curl -sL https://tinyurl.com/markov-url) [url] [approx-num-words]
+bash <(curl -sL https://tinyurl.com/markov-url) [approx-num-words] [url]
 ```
