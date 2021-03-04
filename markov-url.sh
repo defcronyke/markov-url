@@ -168,7 +168,7 @@ markov_url() {
 	
 	FINAL_URI="${URI_STR}${PAGE_FILTERED}"
 
-	chromium --headless --disable-gpu --dump-dom \
+	chromium --headless --no-sandbox --disable-gpu --dump-dom \
 		"$FINAL_URI" 2>/dev/null | \
 		grep "<body>" | sed 's/<body>//' | sed 's@\\@@g' | \
 		recode -qf html..ascii
