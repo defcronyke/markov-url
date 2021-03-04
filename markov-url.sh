@@ -99,26 +99,27 @@ try looking for the command named \"hxselect\", because that's what's needed fro
 	fi
 }
 
-markov_url() {
-	markov_url_deps $@
-
-	WORDS=${WORDS:-"100"}
+markov_rand_url() {
 	NUM_URLS=${NUM_URLS:-15}
-
 	REQ='{"query": "query trending($lineupSlug: String, $categorySlug: String, $pageSize: Int) {\n    allContentItems(lineupSlug: $lineupSlug, categorySlug: $categorySlug, pageSize: $pageSize) {\n        nodes {\n            sourceId\n            title\n            flag\n            href: url\n            imageLarge\n            trending {\n                numViewers\n                numViewersSRS\n            }\n        }\n    }\n}", "variables": "{\"lineupSlug\": \"trending-news\", \"categorySlug\": \"empty-category\", \"pageSize\": '$NUM_URLS'}"}'
 	PRE_URL="aHR0cHM6Ly93d3cuY2JjLmNhL2dyYXBocWw="
 	PRE_RES=$(curl -H 'Content-Type: application/json' -X POST -d "$REQ" -sL $(printf "$PRE_URL" | base64 -d))
 	URLS=($(echo "$PRE_RES" | jq '.data.allContentItems.nodes | .[] | .href' | tr '\n' ' ' | tr -d '"'))
 	URL_NUM=$(( $RANDOM % $NUM_URLS ))
 	RAND_URL=${URLS[$URL_NUM]}
+}
 
-	URL=${URL:-$RAND_URL}
-
+markov_url() {
+	markov_url_deps $@
+	
 	# Allow args to be in either position.
 	if [ $# -ge 1 ]; then
 		# If arg is a number.
 		if [ "$1" -eq "$1" ] 2>/dev/null; then
 			WORDS="$1"
+
+			# Pick a random source if no URL specified.
+			markov_rand_url $@
 		else
 			URL="$1"
 		fi
@@ -135,7 +136,15 @@ markov_url() {
 			WORDS="$2"
 		fi
 	fi
+
+	if [ $# -eq 0 ]; then
+		# Pick a random source if no URL specified.
+		markov_rand_url $@
+	fi
 		
+	URL=${URL:-$RAND_URL}
+	WORDS=${WORDS:-"100"}
+
 	PAGE_FILTERED=$(PAGE=$(curl -sL "$URL" | sed -n '/^.*<body/,/^.*<\/body>/{p;/^.*<\/body>/q}'); \
 		echo "$PAGE" | (hxselect -s ' ' -ic '.detailHeadline, .story h2' && echo "$PAGE" | \
 		hxselect -s ' ' -ic '.story p') | sed 's@\—@@g' | sed 's@ @ @g' | \
