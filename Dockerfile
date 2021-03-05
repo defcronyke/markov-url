@@ -20,9 +20,11 @@ RUN cargo install --target x86_64-unknown-linux-gnu --path .
 FROM rust:slim
 
 RUN apt-get update && apt-get upgrade -y && apt-get dist-upgrade -y && apt-get autoremove -y && \
-    apt-get install -y ca-certificates wget curl grep sed chromium recode html-xml-utils jq
+    apt-get install --no-install-recommends -y \
+    ca-certificates curl grep sed chromium recode html-xml-utils jq
 
 COPY --from=build /usr/local/cargo/bin/markov-url .
+COPY ./markov-url-online.sh .
 
 USER 1000
 

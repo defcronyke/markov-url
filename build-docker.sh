@@ -2,4 +2,4 @@
 
 PORT=${PORT:-3000}
 
-docker build -t gcr.io/markov-url/markov_url:latest .
+docker build --rm -t gcr.io/markov-url/markov_url:latest .
