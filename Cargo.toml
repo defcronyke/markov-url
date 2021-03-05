@@ -9,3 +9,7 @@ edition = "2018"
 [dependencies]
 hyper = { version = "0.14", features = ["full"] }
 tokio = { version = "1", features = ["full"] }
+url = "2.2"
+
+[dev-dependencies]
+cargo-watch = "7.5"
