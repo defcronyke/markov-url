@@ -112,7 +112,7 @@ async fn handle_err_404_not_found(
     req: Request<Body>,
     addr: SocketAddr,
 ) -> Result<Response<Body>, Infallible> {
-    println!("connection from: {}", &get_ip(&req, &addr));
+    println!("404 error connection from: {}", &get_ip(&req, &addr));
 
     Ok(Response::builder()
         .status(StatusCode::NOT_FOUND)

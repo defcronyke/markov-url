@@ -5,7 +5,9 @@ RUN apt-get update && apt-get upgrade -y && apt-get dist-upgrade -y && apt-get a
 
 WORKDIR /usr/src
 
-RUN rustup target add x86_64-unknown-linux-gnu
+RUN rustup target add x86_64-unknown-linux-gnu && \
+    rustup toolchain install nightly && \
+    rustup default nightly
 
 RUN USER=root cargo new markov-url
 WORKDIR /usr/src/markov-url
